@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Calificada 2 - Base de Datos 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2, h3 {
+            color: #a14848;
+        }
+        pre {
+            background-color: #F2F4F4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            color: #CB4335;
+            font-family: Consolas, monospace;
+        }
+        .table-title {
+            margin-top: 30px;
+        }
+        .exercise {
+            background-color: #EBF5FB;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .instructions {
+            background-color: #FEF9E7;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 30px;
+        }
+        #timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: #a14848;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://cdn.podimo.com/images/20f436b3-769c-426f-b0bd-08848f505163_400x400.png" alt="Logo" style="width: 200px; height: 200px;">
+    
+    <h1>Práctica Calificada 2 (Actualizado)</h1>
+    <h2>Asignatura: Base de Datos 1</h2>
+    
+    <div id="timer">Tiempo restante: 90:00</div>
+
+    <h2>Hospital Nacional Guillermo Almenara - Base de Datos</h2>
+
+    <h2>Descripción de la Base de Datos</h2>
+    <p>La base de datos está diseñada para gestionar información básica del Hospital Nacional Guillermo Almenara en Perú. Consta de las siguientes cuatro tablas relacionadas:</p>
+    <ol>
+        <li><strong>Pacientes</strong></li>
+        <li><strong>Médicos</strong></li>
+        <li><strong>Citas</strong></li>
+        <li><strong>Especialidades</strong></li>
+    </ol>
+
+    <h2 class="table-title">1. Creación de Tablas</h2>
+    <pre><code>
+-- Tabla de Pacientes
+CREATE TABLE Pacientes (
+    PacienteID INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    FechaNacimiento DATE,
+    Genero VARCHAR(10),
+    Direccion VARCHAR(200),
+    Telefono VARCHAR(15)
+);
+
+-- Tabla de Especialidades
+CREATE TABLE Especialidades (
+    EspecialidadID INT AUTO_INCREMENT PRIMARY KEY,
+    NombreEspecialidad VARCHAR(100) NOT NULL
+);
+
+-- Tabla de Médicos
+CREATE TABLE Medicos (
+    MedicoID INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    EspecialidadID INT,
+    Telefono VARCHAR(15),
+    FOREIGN KEY (EspecialidadID) REFERENCES Especialidades(EspecialidadID)
+);
+
+-- Tabla de Citas
+CREATE TABLE Citas (
+    CitaID INT AUTO_INCREMENT PRIMARY KEY,
+    PacienteID INT,
+    MedicoID INT,
+    FechaCita DATE,
+    HoraCita TIME,
+    Motivo VARCHAR(200),
+    FOREIGN KEY (PacienteID) REFERENCES Pacientes(PacienteID),
+    FOREIGN KEY (MedicoID) REFERENCES Medicos(MedicoID)
+);
+    </code></pre>
+
+    <h2 class="table-title">2. Inserción de Datos</h2>
+
+    <h3>Tabla Especialidades</h3>
+    <pre><code>
+INSERT INTO Especialidades (NombreEspecialidad) VALUES
+('Cardiología'),
+('Dermatología'),
+('Gastroenterología'),
+('Neurología'),
+('Pediatría'),
+('Oncología'),
+('Ginecología'),
+('Traumatología'),
+('Oftalmología'),
+('Psiquiatría');
+    </code></pre>
+
+    <h3>Tabla Médicos</h3>
+    <pre><code>
+INSERT INTO Medicos (Nombre, Apellido, EspecialidadID, Telefono) VALUES
+('Juan', 'Pérez', 1, '987654321'),
+('María', 'García', 2, '987654322'),
+('Carlos', 'Sánchez', 3, '987654323'),
+('Ana', 'López', 4, '987654324'),
+('Luis', 'Fernández', 5, '987654325'),
+('Lucía', 'Rodríguez', 6, '987654326'),
+('Pedro', 'Martínez', 7, '987654327'),
+('Sofía', 'Gómez', 8, '987654328'),
+('Jorge', 'Díaz', 9, '987654329'),
+('Elena', 'Romero', 10, '987654330'),
+('Roberto', 'Vargas', 1, '987654331'),
+('Carmen', 'Torres', 2, '987654332'),
+('Miguel', 'Ruiz', 3, '987654333'),
+('Isabel', 'Morales', 4, '987654334'),
+('Javier', 'Castro', 5, '987654335'),
+('Laura', 'Herrera', 6, '987654336'),
+('Andrés', 'Ortega', 7, '987654337'),
+('Patricia', 'Navarro', 8, '987654338'),
+('Fernando', 'Rivas', 9, '987654339'),
+('Silvia', 'Mendoza', 10, '987654340');
+    </code></pre>
+
+    <h3>Tabla Pacientes</h3>
+    <pre><code>
+INSERT INTO Pacientes (Nombre, Apellido, FechaNacimiento, Genero, Direccion, Telefono) VALUES
+('Diego', 'Ruiz', '1985-05-12', 'Masculino', 'Av. Perú 123', '912345678'),
+('Clara', 'Torres', '1990-08-23', 'Femenino', 'Calle Lima 456', '912345679'),
+('Antonio', 'Morales', '1975-11-30', 'Masculino', 'Jr. Arequipa 789', '912345680'),
+('Isabel', 'Vargas', '1988-03-15', 'Femenino', 'Av. Cusco 101', '912345681'),
+('Rafael', 'Herrera', '1992-07-27', 'Masculino', 'Calle Piura 202', '912345682'),
+('Patricia', 'Castro', '1980-09-09', 'Femenino', 'Jr. Tacna 303', '912345683'),
+('Fernando', 'Navarro', '1995-12-05', 'Masculino', 'Av. Ica 404', '912345684'),
+('Sara', 'Rivas', '1982-02-18', 'Femenino', 'Calle Puno 505', '912345685'),
+('Miguel', 'Ortega', '1978-06-22', 'Masculino', 'Jr. Moquegua 606', '912345686'),
+('Laura', 'Ruiz', '1993-10-14', 'Femenino', 'Av. Loreto 707', '912345687'),
+('Javier', 'Mendoza', '1987-04-30', 'Masculino', 'Calle Tumbes 808', '912345688'),
+('Carla', 'Flores', '1991-01-25', 'Femenino', 'Jr. Amazonas 909', '912345689'),
+('Roberto', 'Guzmán', '1976-08-11', 'Masculino', 'Av. Junín 1010', '912345690'),
+('Mónica', 'Paredes', '1989-12-03', 'Femenino', 'Calle Huánuco 1111', '912345691'),
+('Andrés', 'Velasco', '1994-05-19', 'Masculino', 'Jr. Cajamarca 1212', '912345692'),
+('Lucía', 'Rojas', '1981-07-07', 'Femenino', 'Av. Ayacucho 1313', '912345693'),
+('Gabriel', 'Quispe', '1996-11-28', 'Masculino', 'Calle Apurímac 1414', '912345694'),
+('Valeria', 'Chávez', '1983-03-14', 'Femenino', 'Jr. Lambayeque 1515', '912345695'),
+('Héctor', 'Medina', '1979-09-20', 'Masculino', 'Av. San Martín 1616', '912345696'),
+('Natalia', 'Vega', '1992-06-16', 'Femenino', 'Calle Ucayali 1717', '912345697');
+    </code></pre>
+
+    <h3>Tabla Citas</h3>
+    <pre><code>
+INSERT INTO Citas (PacienteID, MedicoID, FechaCita, HoraCita, Motivo) VALUES
+(1, 1, '2023-11-01', '09:00:00', 'Chequeo general'),
+(2, 2, '2023-11-02', '10:30:00', 'Erupción cutánea'),
+(3, 3, '2023-11-03', '11:00:00', 'Dolor abdominal'),
+(4, 4, '2023-11-04', '08:45:00', 'Dolor de cabeza'),
+(5, 5, '2023-11-05', '14:00:00', 'Control pediátrico'),
+(6, 6, '2023-11-06', '15:30:00', 'Consulta oncológica'),
+(7, 7, '2023-11-07', '13:15:00', 'Revisión ginecológica'),
+(8, 8, '2023-11-08', '16:00:00', 'Lesión en la rodilla'),
+(9, 9, '2023-11-09', '09:30:00', 'Problemas de visión'),
+(10, 10, '2023-11-10', '10:00:00', 'Evaluación psicológica'),
+(11, 11, '2023-11-11', '11:15:00', 'Revisión cardiológica'),
+(12, 12, '2023-11-12', '12:45:00', 'Consulta dermatológica'),
+(13, 13, '2023-11-13', '14:30:00', 'Seguimiento gastroenterológico'),
+(14, 14, '2023-11-14', '08:00:00', 'Consulta neurológica'),
+(15, 15, '2023-11-15', '09:45:00', 'Control pediátrico'),
+(16, 16, '2023-11-16', '13:00:00', 'Sesión de quimioterapia'),
+(17, 17, '2023-11-17', '15:15:00', 'Control prenatal'),
+(18, 18, '2023-11-18', '16:45:00', 'Terapia física'),
+(19, 19, '2023-11-19', '10:30:00', 'Examen ocular'),
+(20, 20, '2023-11-20', '11:00:00', 'Terapia psicológica');
+    </code></pre>
+
+    <h2 class="table-title">Ejercicios Desarrollados</h2>
+
+    <div class="exercise">
+        <h3>Ejercicio 1</h3>
+        <p><strong>Enunciado:</strong></p>
+        <p>Crear una nueva tabla llamada 'HistorialMedico' con los campos: HistorialID (clave primaria), PacienteID (clave foránea), FechaRegistro, Diagnostico y Tratamiento. Luego, insertar 5 registros en esta nueva tabla.</p>
+
+        <p><strong>Solución SQL:</strong></p>
+        <pre><code>
+-- Crear la tabla HistorialMedico
+CREATE TABLE HistorialMedico (
+    HistorialID INT AUTO_INCREMENT PRIMARY KEY,
+    PacienteID INT,
+    FechaRegistro DATE,
+    Diagnostico VARCHAR(200),
+    Tratamiento VARCHAR(200),
+    FOREIGN KEY (PacienteID) REFERENCES Pacientes(PacienteID)
+);
+
+-- Insertar 5 registros en la tabla HistorialMedico
+INSERT INTO HistorialMedico (PacienteID, FechaRegistro, Diagnostico, Tratamiento) VALUES
+(1, '2023-10-15', 'Hipertensión', 'Medicación y dieta baja en sodio'),
+(2, '2023-10-16', 'Dermatitis', 'Crema tópica'),
+(3, '2023-10-17', 'Gastritis', 'Antiácidos y dieta blanda'),
+(4, '2023-10-18', 'Migraña', 'Analgésicos y reposo'),
+(5, '2023-10-19', 'Resfriado común', 'Descanso y medicación sintomática');
+        </code></pre>
+
+        <p><strong>Explicación:</strong></p>
+        <ul>
+            <li>Se utiliza el comando DDL <code>CREATE TABLE</code> para crear la nueva tabla HistorialMedico.</li>
+            <li>Se definen los campos con sus respectivos tipos de datos, incluyendo una clave primaria autoincrementable y una clave foránea.</li>
+            <li>Se usa el comando DML <code>INSERT INTO</code> para agregar 5 registros a la nueva tabla.</li>
+        </ul>
+    </div>
+
+    <div class="exercise">
+        <h3>Ejercicio 2</h3>
+        <p><strong>Enunciado:</strong></p>
+        <p>Modificar la tabla Pacientes para agregar un nuevo campo llamado 'GrupoSanguineo' de tipo CHAR(3). Luego, actualizar este campo para los primeros 5 pacientes con valores aleatorios de grupos sanguíneos.</p>
+
+        <p><strong>Solución SQL:</strong></p>
+        <pre><code>
+-- Modificar la tabla Pacientes para agregar el campo GrupoSanguineo
+ALTER TABLE Pacientes ADD COLUMN GrupoSanguineo CHAR(3);
+
+-- Actualizar el campo GrupoSanguineo para los primeros 5 pacientes
+UPDATE Pacientes
+SET GrupoSanguineo = 
+    CASE 
+        WHEN PacienteID = 1 THEN 'A+'
+        WHEN PacienteID = 2 THEN 'O-'
+        WHEN PacienteID = 3 THEN 'B+'
+        WHEN PacienteID = 4 THEN 'AB+'
+        WHEN PacienteID = 5 THEN 'A-'
+    END
+WHERE PacienteID <= 5;
+        </code></pre>
+
+        <p><strong>Explicación:</strong></p>
+        <ul>
+            <li>Se usa el comando DDL <code>ALTER TABLE</code> para modificar la estructura de la tabla Pacientes, agregando el nuevo campo GrupoSanguineo.</li>
+            <li>Se utiliza el comando DML <code>UPDATE</code> junto con una cláusula <code>CASE</code> para asignar valores de grupo sanguíneo a los primeros 5 pacientes.</li>
+        </ul>
+    </div>
+
+    <h2 class="instructions">Instrucciones para los Alumnos</h2>
+    <p>A continuación se presentan 10 enunciados que deben resolver utilizando sentencias SQL. Cada enunciado debe ser resuelto y entregado en un archivo SQL o en un documento que contenga las sentencias SQL correspondientes. Asegúrense de probar sus consultas y verificar que funcionan correctamente con la base de datos proporcionada.</p>
+
+    <h3>Enunciados</h3>
+    <ol>
+        <li>Crear una nueva tabla llamada 'Departamentos' con los campos: DepartamentoID (clave primaria), NombreDepartamento y Ubicacion. Insertar al menos 5 departamentos.</li>
+        <li>Modificar la tabla Médicos para agregar un campo 'DepartamentoID' como clave foránea referenciando a la tabla Departamentos. Actualizar este campo para los primeros 10 médicos.</li>
+        <li>Crear un índice en la tabla Citas para el campo FechaCita.</li>
+        <li>Escribir una consulta que muestre el nombre completo de los médicos, su especialidad y el departamento al que pertenecen, ordenados por departamento y luego por apellido del médico.</li>
+        <li>Crear una vista que muestre las citas del día actual, incluyendo el nombre del paciente, el nombre del médico y la especialidad.</li>
+        <li>Escribir una consulta que muestre los pacientes que no tienen citas programadas (usar LEFT JOIN y IS NULL).</li>
+        <li>Actualizar el motivo de todas las citas que contengan la palabra "dolor" para agregar el prefijo "Urgente: " al inicio del motivo.</li>
+        <li>Eliminar todas las citas que estén programadas para fechas pasadas (usar la función CURDATE()).</li>
+        <li>Crear una consulta que muestre el nombre de la especialidad y el número de médicos en cada especialidad, pero solo para especialidades que tengan más de 2 médicos.</li>
+        <li>Escribir una consulta que muestre el nombre completo de los pacientes y su edad (calculada a partir de la fecha de nacimiento), solo para pacientes mayores de 40 años.</li>
+    </ol>
+
+    <h2 class="instructions">Instrucciones Avanzadas para Alumnos</h2>
+    <p>A continuación se presentan ejemplos de consultas avanzadas utilizando diferentes tipos de JOIN, seguidos de 5 enunciados adicionales que deben resolver. Estos ejercicios tienen un mayor nivel de complejidad y se centran en el uso de CROSS JOIN, INNER JOIN, LEFT JOIN y RIGHT JOIN.</p>
+
+    <h3>Ejemplos de Consultas Avanzadas</h3>
+
+    <div class="exercise">
+        <h4>Ejemplo 1: INNER JOIN</h4>
+        <pre><code>
+SELECT Pacientes.Nombre, Pacientes.Apellido, Citas.FechaCita, Medicos.Nombre AS NombreMedico, Especialidades.NombreEspecialidad
+FROM Citas
+INNER JOIN Pacientes ON Citas.PacienteID = Pacientes.PacienteID
+INNER JOIN Medicos ON Citas.MedicoID = Medicos.MedicoID
+INNER JOIN Especialidades ON Medicos.EspecialidadID = Especialidades.EspecialidadID
+WHERE Citas.FechaCita >= CURDATE() AND Citas.FechaCita < DATE_ADD(CURDATE(), INTERVAL 7 DAY);
+        </code></pre>
+        <p><strong>Explicación:</strong> Esta consulta utiliza INNER JOIN para combinar información de cuatro tablas (Citas, Pacientes, Médicos y Especialidades). Muestra las citas programadas para los próximos 7 días, incluyendo el nombre del paciente, la fecha de la cita, el nombre del médico y su especialidad. El INNER JOIN asegura que solo se incluyan las filas que tienen coincidencias en todas las tablas relacionadas.</p>
+    </div>
+
+    <div class="exercise">
+        <h4>Ejemplo 2: LEFT JOIN</h4>
+        <pre><code>
+SELECT Pacientes.Nombre, Pacientes.Apellido, Citas.FechaCita, Medicos.Nombre AS NombreMedico
+FROM Pacientes
+LEFT JOIN Citas ON Pacientes.PacienteID = Citas.PacienteID
+LEFT JOIN Medicos ON Citas.MedicoID = Medicos.MedicoID
+WHERE Citas.CitaID IS NULL OR Citas.FechaCita < CURDATE();
+        </code></pre>
+        <p><strong>Explicación:</strong> Esta consulta utiliza LEFT JOIN para mostrar todos los pacientes, incluyendo aquellos que no tienen citas programadas o cuyas citas ya han pasado. El LEFT JOIN asegura que se incluyan todos los pacientes, incluso si no tienen coincidencias en las tablas Citas o Médicos. La condición en el WHERE filtra para mostrar solo pacientes sin citas o con citas pasadas.</p>
+    </div>
+
+    <h3>Enunciados Avanzados</h3>
+    <ol>
+        <li><strong>CROSS JOIN (2 puntos):</strong> Escribir una consulta que genere todas las posibles combinaciones de médicos y especialidades, incluso si el médico no está asignado a esa especialidad. Mostrar el nombre del médico, su especialidad actual y el nombre de todas las especialidades.</li>
+        <li><strong>INNER JOIN (2 puntos):</strong> Crear una consulta que muestre el nombre del paciente, el nombre del médico, la especialidad y la fecha de la cita para todas las citas programadas en el último mes. Incluir solo las citas donde el médico y el paciente sean de la misma ciudad.</li>
+        <li><strong>LEFT JOIN (2 puntos):</strong> Escribir una consulta que muestre todos los departamentos y el número de médicos en cada departamento. Incluir departamentos que no tengan médicos asignados.</li>
+        <li><strong>RIGHT JOIN (2 puntos):</strong> Crear una consulta que muestre todas las especialidades y el número de citas programadas para cada especialidad en el próximo mes. Incluir especialidades que no tengan citas programadas.</li>
+        <li><strong>Combinación de JOINs (2 puntos):</strong> Escribir una consulta que muestre el nombre del paciente, el nombre del médico, la especialidad, el departamento y la fecha de la última cita para cada paciente. Incluir pacientes que nunca han tenido una cita y médicos que nunca han atendido a un paciente.</li>
+    </ol>
+
+    <script>
+        // Timer script
+        let timeLeft = 90 * 60; // 90 minutes in seconds
+        const timerElement = document.getElementById('timer');
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.textContent = `Tiempo restante: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft > 0) {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            } else {
+                timerElement.textContent = "¡Tiempo terminado!";
+            }
+        }
+
+        updateTimer();
+
+        // Prevent page refresh
+        window.onbeforeunload = function() {
+            return "¿Estás seguro de que quieres salir? Tu progreso no se guardará.";
+        };
+    </script>
+
+</body>
+</html>
